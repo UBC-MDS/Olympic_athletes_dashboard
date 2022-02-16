@@ -10,4 +10,4 @@ Please ensure you create a minimal reprex of any bugs you find - this will help 
 If you want to add code contributions yourself please follow the steps below to configure a development environment. Before starting on major new work - please run the idea by the maintainer team by opening an issue on the Github repo.
 
 ### Code of Conduct
-All contributors must abide by our [Code of Conduct]().
+All contributors must abide by our [Code of Conduct](https://github.com/UBC-MDS/dsci_532_group08/blob/main/CODE_OF_CONDUCT.md).
