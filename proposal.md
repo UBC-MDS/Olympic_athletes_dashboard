@@ -1,4 +1,4 @@
-# OLympics Athelete Dashboard
+# Olympics Athelete Dashboard
 
 ## Motivation and Purpose
 
