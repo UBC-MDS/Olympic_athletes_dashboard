@@ -3,9 +3,11 @@
 ## Motivation and Purpose
 
 **Our Role:** Data science consultancy firm <br/>
-**Target Audience:** National Olympics committee
+**Target Audience:** National Olympics committee, sports enthusiasts in the general public
 
 The olympics involve a large number of athletes from a variety of backgrounds, as well as personal attributes (height, weight, age). Olympic committees have an interest in identifying talented individuals for various sports at an early point in order to bolster their olympic teams. To address this, we propose building a data dashboard which allows olympic committees to explore historical trends in various athletes across all years and sports. Our dashboard will display distribution of athlete attributes, which can be filtered by medals won, country, olympic years, and sport, such that users can make quick comparisons and understand long-term trends in the data. 
+
+The dashboard can also be utilised by members of the general public who are enthusiastic about olympic sports, and want to learn more about the history of the sports and their respective athletes. 
 
   
 <br/><br/>
