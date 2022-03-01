@@ -1,5 +1,5 @@
 body {
-    background-color: #332542;
+    background-color: #322c4a;
 }
 
 h5 {
@@ -7,19 +7,19 @@ h5 {
 }
 
 .rc-slider-dot-active {
-    border-color: red;
+    border-color: #B33951;
 }
 
 .rc-slider-track {
-    background-color: red;
+    background-color: #B33951;
 }
 
 .rc-slider-handle {
-    background-color: red;
-    border: red;
+    background-color: #B33951;
+    border: #B33951;
 }
 
 .rc-slider-handle-dragging{
-    border-color: red;
-    box-shadow: red;
+    border-color: #B33951;
+    box-shadow: #B33951;
 }
