@@ -12,14 +12,17 @@ server = app.server
 app.layout = html.Div([
         html.H1("Who Are in the Olympics?",
                 style = {'color': 'white', 'text-align': 'left', 'padding': '0px 0px 0px 20px', 'margin-bottom': '-10px'}),
-        html.H4("Insights for Olympic Athlete Information since 1976", 
+        html.H4("Insights for Olympic Athlete Information since 1896", 
                 style = {'color': 'white', 'text-align': 'left', 'border-bottom': '1px solid black', 'padding': '0px 0px 10px 20px'}),
         html.Div([
             html.Div([
-                html.H2("Filters", style = {'flex-grow': '1', 'margin': '0px'}),
-                html.Hr(style = {'flex-grow': '0.1', 'border-top': '1px solid white', 'width': '100%'}),
+                html.H2("Filters", style = {'flex-grow': '1', 
+                                            'margin': '0px',
+                                            'border-bottom': '2px solid white', 
+                                            'line-height': '1'}),
+                # html.Hr(style = {'flex-grow': '0.1', 'border-top': '1px solid white', 'width': '100%'}),
                 html.Div([
-                html.H5("Year Filter"),
+                html.H5("Drag Slider To Select Years"),
                 dcc.RangeSlider(
                     min = 1896, max = 2016,
                     marks = {i: {'label': f'{i+4}', 'style': {'transform': 'rotate(90deg)', 'color': 'white'}} for i in range(1896, 2016, 8)},
@@ -29,7 +32,7 @@ app.layout = html.Div([
                 )
                 ], style = {'width': '100%', 'flex-grow': '2'}),
                 html.Div([
-                html.H5("Sport Filter"),
+                html.H5("Select Sports"),
                 dcc.Dropdown(
                     options=['All'] + np.sort(df.Sport.unique()).tolist(),
                     value=['All'],
@@ -38,7 +41,7 @@ app.layout = html.Div([
                 )
                 ], style = {'width': '100%', 'color': 'black', 'flex-grow': '1.5'}),
                 html.Div([
-                html.H5("Country Filter"),
+                html.H5("Select Countries"),
                 dcc.Dropdown(
                     options=['All'] + np.sort(df.Team.unique()).tolist(),
                     value=['All'],
@@ -64,20 +67,25 @@ app.layout = html.Div([
                     inline=True
                 )
                 ], style = {'width': '100%', 'flex-grow': '4'})
-        ], style = {'width': '25%', 'margin-top': '0px', 'padding': '10px', 
-                    'background-color': '#655d85', 'border-radius': '10px',
+        ], style = {'width': '23%', 'margin-top': '0px', 'padding': '25px', 
+                    'background-color': '#544F78', 'border-radius': '10px',
                     'display': 'flex', 'justify-content': 'space-around', 'flex-direction': 'column'}),
             html.Div([
                 dcc.Graph(id='hist', 
-                            style = {'height': '350px', 'width': '49%', 'display': 'inline-block'},
+                            style = {'height': '350px', 'width': '33%', 'display': 'inline-block'},
                             config={
                                 'displayModeBar':False
                             }),
                 dcc.Graph(id='hist2', 
-                            style = {'height': '350px', 'width': '49%', 'display': 'inline-block'},
+                            style = {'height': '350px', 'width': '33%', 'display': 'inline-block'},
                             config={
                                 'displayModeBar':False
                             }),
+                dcc.Graph(id='hist3', 
+                style = {'height': '350px', 'width': '33%', 'display': 'inline-block'},
+                config={
+                    'displayModeBar':False
+                }),
                 dcc.Graph(id='map', 
                             style = {'height': '500px'},
                             config={
@@ -86,11 +94,11 @@ app.layout = html.Div([
                 # dash_table.DataTable(data=test_df.to_dict('records'), 
                 #                     columns=[{"name": i, "id": i} for i in test_df.columns], 
                 #                     id = 'tbl')
-                ], style = {'width': '65%', 'overflow': 'hidden', 'height': '850px', 
-                            'background-color': '#655d85', 'border-radius': '10px', 
+                ], style = {'width': '70%', 'overflow': 'hidden', 'height': '850px', 
+                            'background-color': '#544F78', 'border-radius': '10px', 
                             'padding': '1%'})
             ], style = {'display': 'flex', 'justify-content': 'space-around'})
-        ], style = {'display': 'fixed', 'height': '100%', 'color': 'white', 'background-color': '#332542'})
+        ], style = {'display': 'fixed', 'height': '100%', 'color': 'white', 'background-color': '#322c4a'})
 
 def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', sport=['All'], country=['All']):
 
@@ -99,6 +107,7 @@ def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', spor
     medal_filter = True if medals == 'All' else (df['Medal'] == medals)
     sport_filter = True if 'All' in sport else (df['Sport'].isin(sport))
     country_filter = True if 'All' in country else (df['Team'].isin(country))
+    
     data = data[year_filter & season_filter & sport_filter & country_filter & medal_filter]
 
     return data
@@ -116,8 +125,8 @@ def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', spor
 #     return filtered.sample(50, replace=True).to_dict('records')
 
 
-styling_template = {'title': {'font': {'size': 25, 'family': 'helvetica', 'color': 'white'}, 'x': 0,
-                        'xref':'paper', 'y': 1, 'yanchor': 'bottom', 'yref':'paper', 'pad':{'b': 5}},
+styling_template = {'title': {'font': {'size': 21, 'family': 'helvetica', 'color': 'white'}, 'x': 0,
+                        'xref':'paper', 'y': 1, 'yanchor': 'bottom', 'yref':'paper', 'pad':{'b': 10}},
                 'legend': {'font': {'color': 'white'}},
              'margin': dict(l=20, r=20, t=50, b=20),
              'paper_bgcolor': 'rgba(0,0,0,0)', 
@@ -138,7 +147,8 @@ map_styles = {
             'lakecolor': '#97c7f7'},
     'coloraxis': {
         'colorbar': {'title': {'font': {'color': 'white', 'family': 'helvetica'}},
-                    'tickfont': {'color': 'white', 'family': 'helvetica'}}
+                    'tickfont': {'color': 'white', 'family': 'helvetica'}},
+        'colorscale': 'reds'
     }
 }
 
@@ -146,6 +156,7 @@ map_styles = {
 @app.callback(
     Output('hist', 'figure'),
     Output('hist2', 'figure'),
+    Output('hist3', 'figure'),
     Input('year_range', 'value'),
     Input('sport', 'value'),
     Input('country', 'value'),
@@ -154,15 +165,19 @@ map_styles = {
 )
 def update_graphs(year_range, sport, country, medals, season):
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
-    fig = px.histogram(data_frame=filtered, x='Height', color='Sex', title='Distribution of Athlete Heights')
+    fig = px.histogram(data_frame=filtered, nbins=50, x='Height', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Heights')
     fig.update_layout(styling_template)
     fig.update_layout({'xaxis': {'range': [110, 225]}})
 
-    fig2 = px.histogram(data_frame=filtered, x='Age', color='Sex', title='Distribution of Athlete Ages')
+    fig2 = px.histogram(data_frame=filtered, x='Age', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Ages')
     fig2.update_layout(styling_template)
     fig2.update_layout({'xaxis': {'range': [10, 60]}})
 
-    return fig, fig2
+    fig3 = px.histogram(data_frame=filtered, nbins=50, x='Weight', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Weights')
+    fig3.update_layout(styling_template)
+    fig3.update_layout({'xaxis': {'range': [30, 200]}})
+
+    return fig, fig3, fig2
 
 # Function which takes filtered data, does additional aggregation, and plots the choropleth
 @app.callback(
@@ -181,7 +196,7 @@ def update_map(year_range, sport, country, medals, season):
               locations = 'Country',
               locationmode = 'country names',
               color = 'Number of Athletes',
-              title='Number of Athletes Per Region')
+              title='Number of Athletes Per Country')
     map.update_layout(styling_template)
     map.update_layout(map_styles)
     
