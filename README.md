@@ -48,8 +48,9 @@ Different groups of users will have the options to customize diverse filters and
 
 Based on a dataset of approximately 270,000 Olympic Athletes, spanning from all Olympic Games between 1896 and 2016, this app aims to help you get some insight into Olympic Athletes. There are four charts: 3 histograms for the distribution of athletes' height, age, and weight, with two colors to distinguish genders, and a map demonstrating the number of athletes in different countries. When users mouse over the chart, tooltips with specific data appear. On the left-hand menu, four filters can be used here. A slider to select different years, two checkboxes for season and medals, and a dropdown menu to choose sports.
 
-<img src="docs/Olympic_athletes_dashboard.gif" width=800/>
-
+<p align="center">
+  <img src="docs/Olympic_athletes_dashboard.gif" width=400/>
+</p>
 ## Who are we?
 
 The founders of the Olympic Athletes Dashboard app - [Xiaohan Chen][link_xiaohan], [Cuthbert Chow][link_cuthbert], [Jessie Wong][link_jessie] and [Luming Yang][link_luming] - are teammates from the Data Science graduate school at [University of British Columbia][]. 
