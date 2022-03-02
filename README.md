@@ -12,6 +12,7 @@ This document (the README file) is a hub to give you some information about the 
     - [The solution](#the-solution)
   - [Who are we?](#who-are-we)
   - [What do we need?](#what-do-we-need)
+  - [Installation](#installation)
   - [Get involved](#get-involved)
   - [Contact us](#contact-us)
   - [Description](#description)
@@ -58,6 +59,17 @@ We need expertise in data visualization, user experience design, and dashboard m
 We'd love your feedback along the way either from a developer view or from a user experience perspective.
 
 Our ultimate goal is to mitigate the misconceptions of the Olympic athletes and promote involvements from the general public to Olympic sports.
+
+## Installation
+
+You can install or clone the development version of Olympic Athletes Dashboard from GitHub to your local directory with the command below from the command line:
+
+```
+git clone https://github.com/UBC-MDS/Olympic_athletes_dashboard.git
+```
+You could setup a virtual enviroment using the command below from the root of the cloned repository:
+```
+
 
 ## Get involved
 
