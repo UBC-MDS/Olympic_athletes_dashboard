@@ -32,7 +32,7 @@ So, different groups of people have varied needs and usage scenarios when it com
 
 ### The solution
 
-The ![Olympic Athletes Dashboard app](https://olympic-athletes-dash.herokuapp.com/) will:
+The [Olympic Athletes Dashboard app](https://olympic-athletes-dash.herokuapp.com/) will:
 
 * Present the distributions of Olympic athletes' personal attributes: ages, weights, heights. 
 * Serve as an objective referencing tool for the Olypic committees to identify the potential individuals with suitable heights and weights.
@@ -51,9 +51,10 @@ Based on a dataset of approximately 270,000 Olympic Athletes, spanning from all 
 <p align="center">
   <img src="docs/Olympic_athletes_dashboard.gif" width=400/>
 </p>
+
 ## Who are we?
 
-The founders of the Olympic Athletes Dashboard app - [Xiaohan Chen][link_xiaohan], [Cuthbert Chow][link_cuthbert], [Jessie Wong][link_jessie] and [Luming Yang][link_luming] - are teammates from the Data Science graduate school at [University of British Columbia][]. 
+The founders of the Olympic Athletes Dashboard app - [Xiaohan Chen][link_xiaohan], [Cuthbert Chow][link_cuthbert], [Jessie Wong][link_jessie] and [Luming Yang][link_luming] - are teammates from the Data Science graduate school at the University of British Columbia. 
 
 The development of this app is mentored by the teaching team from the MDS program at the University of British Columbia. Check out the awesome program and teaching team on the [homepage][link_ubc_mds].
 
