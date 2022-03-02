@@ -80,7 +80,7 @@ app.layout = html.Div([
                 dcc.Tabs([
                     dcc.Tab(label='Plots', children=[
                         dcc.Loading(
-                            id = 'loading',
+                            id = 'loading_hist',
                             children = [
                                 dcc.Graph(id='hist', 
                                         style = {'height': '350px', 'width': '33%', 'display': 'inline-block'},
@@ -96,29 +96,58 @@ app.layout = html.Div([
                                         style = {'height': '350px', 'width': '33%', 'display': 'inline-block'},
                                         config={
                                             'displayModeBar':False
-                                }),
-                                dcc.Graph(id='map', 
-                                            style = {'height': '500px', 'width': '99%'},
-                                            config={
-                                                'displayModeBar':False
                                 })
-                            ], type = 'cube'
+                            ], type = 'circle', color = '#B33951'
+                        ),
+                        dcc.Loading(
+                            id = 'loading_map',
+                            children = [
+                                dcc.Graph(id='map', 
+                                        style = {'height': '500px', 'width': '99%'},
+                                        config={
+                                            'displayModeBar':False
+                                })
+                            ], type = 'circle', color = '#B33951'
                         )
                         ],
                             className='custom-tab',
                             selected_className='custom-tab--selected'),
                     dcc.Tab(label='Data Table', children = [
                         html.Br(),
-                        dash_table.DataTable(data=df.sample(100).to_dict('records'), 
-                                    columns=[{"name": i, "id": i} for i in df.columns], 
+                        dash_table.DataTable(data=df.sample(50).to_dict('records'), 
+                                    columns=[{"name": i, "id": i} for i in df.columns[1:]], 
                                     id = 'tbl', 
                                     style_cell = {'color': 'black', 'whiteSpace': 'normal'}, 
                                     style_header = {'color': 'white', 'backgroundColor': '#322c4a', 'border': '0px solid white', 'fontWeight': 'bold', 'textAlign': 'left'},
-                                    style_data = {'backgroundColor': '#96293F'},
+                                    style_data = {'backgroundColor': '#96293F', 'color': 'white'},
                                     style_data_conditional = [
                                         {
                                             'if': {'column_id': ['ID', 'Sex', 'Height', 'Team', 'Games', 'Season', 'Sport', 'Medal']},
                                             'backgroundColor': '#B33951'
+                                        },
+                                        {
+                                            'if': {
+                                                'filter_query': '{Medal} = Gold',
+                                                'column_id': 'Medal'
+                                            },
+                                            'backgroundColor': 'gold',
+                                            'color': 'black'
+                                        },
+                                        {
+                                            'if': {
+                                                'filter_query': '{Medal} = Silver',
+                                                'column_id': 'Medal'
+                                            },
+                                            'backgroundColor': 'silver',
+                                            'color': 'black'
+                                        },
+                                        {
+                                            'if': {
+                                                'filter_query': '{Medal} = Bronze',
+                                                'column_id': 'Medal'
+                                            },
+                                            'backgroundColor': 'brown',
+                                            'color': 'black'
                                         }
                                     ],
                                     page_action='native', 
@@ -156,7 +185,10 @@ def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', spor
 )
 def update_table(year_range, sport, country, medals, season):
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
-    return filtered.sample(80).to_dict('records')
+    filtered.drop(columns = 'ID', inplace = True)
+    if len(filtered) < 5000:
+        return filtered.to_dict('records')
+    return filtered.sample(5000).to_dict('records')
 
 
 styling_template = {'title': {'font': {'size': 21, 'family': 'helvetica', 'color': 'white'}, 'x': 0,
@@ -199,6 +231,8 @@ map_styles = {
 )
 def update_graphs(year_range, sport, country, medals, season):
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
+    filtered = filtered.groupby(['ID', 'Games']).agg({'Age': 'mean', 'Height': 'mean', 'Weight': 'mean', 'Sex': 'first'}).reset_index()
+
     fig = px.histogram(data_frame=filtered, nbins=50, x='Height', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Heights')
     fig.update_layout(styling_template)
     fig.update_layout({'xaxis': {'range': [110, 225], 'title': {'text': 'Height (cm)'}}})
