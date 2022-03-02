@@ -32,7 +32,7 @@ So, different groups of people have varied needs and usage scenarios when it com
 
 ### The solution
 
-The Olympic Athletes Dashboard app will:
+The ![Olympic Athletes Dashboard app](https://olympic-athletes-dash.herokuapp.com/) will:
 
 * Present the distributions of Olympic athletes' personal attributes: ages, weights, heights. 
 * Serve as an objective referencing tool for the Olypic committees to identify the potential individuals with suitable heights and weights.
