@@ -76,7 +76,7 @@ source olympic_athletes/bin/activate
 pip install -r requirements.txt
 ```
 
-3. You could run the Olympic Athlete Dashboard app on the local server using the command below from the root of this repository:
+3. You could run the Olympic Athlete Dashboard app in the virtual environment on the local server using the command below from the root of this repository:
 
 ```
 python src/app.py
