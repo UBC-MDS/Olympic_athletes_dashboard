@@ -4,7 +4,7 @@ import altair as alt
 from dash import Dash, dcc, html, Input, Output, dash_table
 import plotly.express as px
 
-df = pd.read_csv('../data/clean_data.csv')
+df = pd.read_csv('data/processed/clean_data.csv')
 
 app = Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css', '/style.css'])
 server = app.server
