@@ -109,7 +109,7 @@ app.layout = html.Div([
                             selected_className='custom-tab--selected'),
                     dcc.Tab(label='Data Table', children = [
                         html.Br(),
-                        dash_table.DataTable(data=df.sample(100).to_dict('records'), 
+                        dash_table.DataTable(data=df.sample(50).to_dict('records'), 
                                     columns=[{"name": i, "id": i} for i in df.columns], 
                                     id = 'tbl', 
                                     style_cell = {'color': 'black', 'whiteSpace': 'normal'}, 
