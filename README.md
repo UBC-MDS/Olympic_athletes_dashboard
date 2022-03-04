@@ -42,7 +42,10 @@ So, corresponding to the different problems, users have the options to customize
 
 ## Demonstration
 
-There are four charts: 3 histograms for the distribution of athletes' height, age, and weight, with two colors to distinguish genders, and a map demonstrating the number of athletes in different countries. When users mouse over the chart, tooltips with specific data appear. On the left-hand menu, four filters can be used here. A slider to select different years, two checkboxes for season and medals, and a dropdown menu to choose sports.
+Our [Olympics Athlete Dashboard](https://olympic-athletes-dash.herokuapp.com/) currently consists of:
+* 4 plots: 3 histograms for athletes' `Age`, `Weight`, and `Height` distribution, with two colors to distinguish genders.
+* 5 filters on the left side bar: a slider for `year` range selection, two drop-down menus for `sports` and `countries`, and two radio buttons to select `medal` and `season`.
+* All the plots are on the "Plots" tab, the "Data Table" tab shows the clean data based on the selected filters. 
 
 <p align="center">
   <img src="docs/Olympic_athletes_dashboard.gif" width=400/>
