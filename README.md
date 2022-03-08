@@ -69,16 +69,15 @@ Our ultimate goal is to mitigate the misconceptions of the Olympic athletes and 
 
 ## Installation
 
-You could first install or clone the development version of Olympic Athletes Dashboard from GitHub to your local directory and then run this app using Docker follwing the commands below:
+To run this app locally using Docker, please run the following commands after cloning the repo:
 
 ```bash
-git clone https://github.com/UBC-MDS/Olympic_athletes_dashboard.git
 cd Olympic_athletes_dashboard
 docker-compose build
 docker-compose up
 ```
 
-Finally, you could view the webpage locally by navigating to the address http://localhost:8000/ in your browser.
+You could view the webpage locally by navigating to the address http://localhost:8000/ in your browser.
 
 ## Get involved
 
