@@ -69,27 +69,16 @@ Our ultimate goal is to mitigate the misconceptions of the Olympic athletes and 
 
 ## Installation
 
-1. You could install or clone the development version of Olympic Athletes Dashboard from GitHub to your local directory with the command below from the command line:
+You could first install or clone the development version of Olympic Athletes Dashboard from GitHub to your local directory and then run this app using Docker follwing the commands below:
 
-```
+```bash
 git clone https://github.com/UBC-MDS/Olympic_athletes_dashboard.git
+cd Olympic_athletes_dashboard
+docker-compose build
+docker-compose up
 ```
 
-2. You could setup a virtual enviroment using the commands below from the root of the cloned repository:
-
-```
-virtualenv olympic_athletes
-source olympic_athletes/bin/activate
-pip install -r requirements.txt
-```
-
-3. You could run the Olympic Athlete Dashboard app in the virtual environment on the local server using the command below from the root of this repository:
-
-```
-python src/app.py
-```
-
-4. You could view the webpage locally by navigating to the address http://127.0.0.1:8050/ in your browser.
+Finally, you could view the webpage locally by navigating to the address http://localhost:8000/ in your browser.
 
 ## Get involved
 
