@@ -156,7 +156,7 @@ app.layout = html.Div([
                             className='custom-tab',
                             selected_className='custom-tab--selected')
                 ])
-                ], style = {'width': '70%', 'overflow': 'hidden', 'height': '850px', 
+                ], style = {'width': '70%', 'overflow': 'hidden', 'height': '950px', 
                             'background-color': '#544F78', 'border-radius': '10px', 
                             'padding': '1%'})
             ], style = {'display': 'flex', 'justify-content': 'space-around'})
