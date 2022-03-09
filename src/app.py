@@ -233,7 +233,7 @@ def update_graphs(year_range, sport, country, medals, season):
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
     filtered = filtered.groupby(['ID', 'Games']).agg({'Age': 'mean', 'Height': 'mean', 'Weight': 'mean', 'Sex': 'first'}).reset_index()
 
-    fig = px.histogram(data_frame=filtered, nbins=50, x='Height', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Heights')
+    fig = px.histogram(data_frame=filtered,nbins = 50 ,x='Height', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Heights')
     fig.update_layout(styling_template)
     fig.update_layout({'xaxis': {'range': [110, 225], 'title': {'text': 'Height (cm)'}}})
 
@@ -241,11 +241,11 @@ def update_graphs(year_range, sport, country, medals, season):
     fig2.update_layout(styling_template)
     fig2.update_layout({'xaxis': {'range': [10, 60], 'title': {'text': 'Age (years)'}}})
 
-    fig3 = px.histogram(data_frame=filtered, nbins=50, x='Weight', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Weights')
+    fig3 = px.histogram(data_frame=filtered,nbins = 50,  x='Weight', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Weights')
     fig3.update_layout(styling_template)
     fig3.update_layout({'xaxis': {'range': [30, 200], 'title': {'text': 'Weight (kgs)'}}})
 
-    return fig, fig3, fig2
+    return (fig, fig3, fig2)
 
 # Function which takes filtered data, does additional aggregation, and plots the choropleth
 @app.callback(
