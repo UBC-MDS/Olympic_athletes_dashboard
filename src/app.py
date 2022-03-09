@@ -7,7 +7,7 @@ import plotly.express as px
 app = Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css', '/style.css'])
 server = app.server
 
-df = pd.read_csv('../data/processed/clean_data.csv')
+df = pd.read_csv('data/processed/clean_data.csv')
 
 app.layout = html.Div([
 
