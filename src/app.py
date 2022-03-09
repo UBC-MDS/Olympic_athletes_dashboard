@@ -5,6 +5,7 @@ from dash import Dash, dcc, html, Input, Output, dash_table
 import plotly.express as px
 
 app = Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css', '/style.css'])
+app.title = "Olympic athletes dashboard"
 server = app.server
 
 df = pd.read_csv('data/processed/clean_data.csv')
