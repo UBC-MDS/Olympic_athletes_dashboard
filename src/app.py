@@ -201,7 +201,7 @@ def update_table(year_range, sport, country, medals, season):
 
 
 styling_template = {'title': {'font': {'size': 21, 'family': 'helvetica', 'color': 'white'}, 'x': 0,
-                        'xref':'paper', 'y': 1, 'yanchor': 'bottom', 'yref':'paper', 'pad':{'b': 10}},
+                        'xref':'paper', 'y': 1, 'yanchor': 'bottom', 'yref':'paper', 'pad':{'b': 20}},
                 'legend': {'font': {'color': 'white'}},
              'margin': dict(l=20, r=20, t=50, b=20),
              'paper_bgcolor': 'rgba(0,0,0,0)', 
@@ -223,8 +223,10 @@ map_styles = {
     'coloraxis': {
         'colorbar': {'title': {'font': {'color': 'white', 'family': 'helvetica'}},
                     'tickfont': {'color': 'white', 'family': 'helvetica'}}
-        # 'colorscale': 'reds'
-    }
+
+    },
+    'sliders': [{'font': {'color': 'white'}, 'tickcolor': 'white', 'pad': {'t': 0}}],
+    'updatemenus': [{'font': {'color': 'white'}, 'pad': {'t': 10}}]
 }
 
 # Function which takes filtered data and plots the two histograms
@@ -236,33 +238,48 @@ map_styles = {
     Input('sport', 'value'),
     Input('country', 'value'),
     Input('medals', 'value'),
-    Input('season', 'value')
+    Input('season', 'value'),
+    Input('map', 'clickData'),
+    Input('map', 'relayoutData')
 )
-def update_graphs(year_range, sport, country, medals, season):
+def update_graphs(year_range, sport, country, medals, season, click, relay):
+    print(relay)
+
+    title1 = 'Distribution of Athlete Heights'
+    title2 = 'Distribution of Athlete Ages'
+    title3 = 'Distribution of Athlete Weights'
+
+    if click:
+        country = [click['points'][0]['location']]
+        title1 += f'<br><sup>{country[0]}</sup>'
+        title2 += f'<br><sup>{country[0]}</sup>'
+        title3 += f'<br><sup>{country[0]}</sup>'
+
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
     filtered = filtered.groupby(['ID', 'Games']).agg({'Age': 'mean', 'Height': 'mean', 'Weight': 'mean', 'Sex': 'first', 'Year': 'first'}).reset_index()
 
     fig = px.histogram(data_frame=filtered, nbins=50 ,
                         x='Height', color='Sex', opacity=0.8, 
-                        barmode='overlay', title='Distribution of Athlete Heights',
+                        barmode='overlay', title=title1,
                         color_discrete_map={'M':'#0081C8', 'F':'#EE334E'})
     fig.update_layout(styling_template)
     fig.update_layout({'xaxis': {'range': [110, 225], 'title': {'text': 'Height (cm)'}}})
 
     fig2 = px.histogram(data_frame=filtered, 
                         x='Age', color='Sex', opacity=0.8, 
-                        barmode='overlay', title='Distribution of Athlete Ages',
+                        barmode='overlay', title=title2,
                         color_discrete_map={'M':'#0081C8', 'F':'#EE334E'})
     fig2.update_layout(styling_template)
     fig2.update_layout({'xaxis': {'range': [10, 60], 'title': {'text': 'Age (years)'}}})
 
     fig3 = px.histogram(data_frame=filtered,nbins = 50,  
                         x='Weight', color='Sex', opacity=0.8, 
-                        barmode='overlay', title='Distribution of Athlete Weights',
+                        barmode='overlay', title=title3,
                         color_discrete_map={'M':'#0081C8', 'F':'#EE334E'})
     fig3.update_layout(styling_template)
     fig3.update_layout({'xaxis': {'range': [30, 200], 'title': {'text': 'Weight (kgs)'}}})
 
+    print(click)
     return (fig, fig3, fig2)
 
 # Function which takes filtered data, does additional aggregation, and plots the choropleth
@@ -278,9 +295,11 @@ def update_graphs(year_range, sport, country, medals, season):
 def update_map(year_range, sport, country, medals, season, animation):
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
 
+
     if animation=="Animate":
         grouped = filtered.groupby(['Team', 'Year']).agg({'Name': 'nunique'}).reset_index()
         grouped.rename(columns = {'Team': 'Country', 'Name': 'Number of Athletes'}, inplace = True)
+        max = grouped['Number of Athletes'].max()
         map = px.choropleth(grouped,
                 locations = 'Country',
                 locationmode = 'country names',
@@ -289,15 +308,19 @@ def update_map(year_range, sport, country, medals, season, animation):
                   animation_frame='Year',
                 color_continuous_scale=['white', '#00A651'])
 
+        map.update_layout({'coloraxis': {'cmax': max, 'cauto': False}})
+
     else: 
         grouped = filtered.groupby('Team')['Name'].nunique().reset_index()
         grouped.rename(columns = {'Team': 'Country', 'Name': 'Number of Athletes'}, inplace = True)
+
         map = px.choropleth(grouped,
                 locations = 'Country',
                 locationmode = 'country names',
                 color = 'Number of Athletes',
                 title='Number of Athletes Per Country',
                 color_continuous_scale=['white', '#00A651'])
+        
 
     map.update_layout(styling_template)
     map.update_layout(map_styles)
