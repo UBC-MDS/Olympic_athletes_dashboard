@@ -89,7 +89,8 @@ Please note that it's very important to us that we maintain a positive and suppo
 
 If you want to report a problem or suggest an enhancement we'd love for you to [open an issue](../../issues) at this github repository because then we can get right on it.
 
-
+## License
+The product is provided based on [this License](LICENSE).
 
 ## Thank you
 
