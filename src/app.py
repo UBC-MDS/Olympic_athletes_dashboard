@@ -71,7 +71,16 @@ app.layout = html.Div([
                         id='season',
                         inline=True
                     )
-                ], style = {'width': '100%', 'flex-grow': '4', 'color': 'white'})
+                ], style = {'width': '100%', 'flex-grow': '4', 'color': 'white'}),
+                html.Div([
+                    html.H5("Animation Toggle"),
+                    dcc.RadioItems(
+                        options=['Animate', 'Fixed'],
+                        value='Fixed',
+                        id='animation',
+                        inline=True
+                    )
+                ], style = {'width': '100%', 'flex-grow': '1', 'color': 'white'})
             ], style = {'width': '23%', 'margin-top': '0px', 'padding': '25px', 
                     'background-color': '#544F78', 'border-radius': '10px',
                     'display': 'flex', 'justify-content': 'space-around', 'flex-direction': 'column'}),
@@ -98,7 +107,7 @@ app.layout = html.Div([
                                         config={
                                             'displayModeBar':False
                                 })
-                            ], type = 'circle', color = '#B33951'
+                            ], type = 'circle', color = '#EE334E'
                         ),
                         dcc.Loading(
                             id = 'loading_map',
@@ -108,7 +117,7 @@ app.layout = html.Div([
                                         config={
                                             'displayModeBar':False
                                 })
-                            ], type = 'circle', color = '#B33951'
+                            ], type = 'circle', color = '#EE334E'
                         )
                         ],
                             className='custom-tab',
@@ -231,7 +240,7 @@ map_styles = {
 )
 def update_graphs(year_range, sport, country, medals, season):
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
-    filtered = filtered.groupby(['ID', 'Games']).agg({'Age': 'mean', 'Height': 'mean', 'Weight': 'mean', 'Sex': 'first'}).reset_index()
+    filtered = filtered.groupby(['ID', 'Games']).agg({'Age': 'mean', 'Height': 'mean', 'Weight': 'mean', 'Sex': 'first', 'Year': 'first'}).reset_index()
 
     fig = px.histogram(data_frame=filtered, nbins=50 ,
                         x='Height', color='Sex', opacity=0.8, 
@@ -263,18 +272,33 @@ def update_graphs(year_range, sport, country, medals, season):
     Input('sport', 'value'),
     Input('country', 'value'),
     Input('medals', 'value'),
-    Input('season', 'value')
+    Input('season', 'value'), 
+    Input('animation', 'value')
 )
-def update_map(year_range, sport, country, medals, season):
+def update_map(year_range, sport, country, medals, season, animation):
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
-    grouped = filtered.groupby('Team')['Name'].nunique().to_frame().reset_index()
-    grouped.rename(columns = {'Team': 'Country', 'Name': 'Number of Athletes'}, inplace = True)
-    map = px.choropleth(grouped,
-              locations = 'Country',
-              locationmode = 'country names',
-              color = 'Number of Athletes',
-              title='Number of Athletes Per Country',
-              color_continuous_scale=['white', '#00A651'])
+
+    if animation=="Animate":
+        grouped = filtered.groupby(['Team', 'Year']).agg({'Name': 'nunique'}).reset_index()
+        grouped.rename(columns = {'Team': 'Country', 'Name': 'Number of Athletes'}, inplace = True)
+        map = px.choropleth(grouped,
+                locations = 'Country',
+                locationmode = 'country names',
+                color = 'Number of Athletes',
+                title='Number of Athletes Per Country',
+                  animation_frame='Year',
+                color_continuous_scale=['white', '#00A651'])
+
+    else: 
+        grouped = filtered.groupby('Team')['Name'].nunique().reset_index()
+        grouped.rename(columns = {'Team': 'Country', 'Name': 'Number of Athletes'}, inplace = True)
+        map = px.choropleth(grouped,
+                locations = 'Country',
+                locationmode = 'country names',
+                color = 'Number of Athletes',
+                title='Number of Athletes Per Country',
+                color_continuous_scale=['white', '#00A651'])
+
     map.update_layout(styling_template)
     map.update_layout(map_styles)
     

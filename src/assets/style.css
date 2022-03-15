@@ -31,7 +31,7 @@ input {
     height: 12px;
     width: 12px;
     padding: 1px 8px;
-    transition: 0.2s ease-in-out;
+    transition: 0.4s ease-in-out;
     position: relative;
     margin-right: 5px;
 }
@@ -41,7 +41,7 @@ label{
 }
 
 input:checked {
-    border: 2px solid black;
+    border: 3px solid black;
     background-color: #FCB131 !important;
 }
 
