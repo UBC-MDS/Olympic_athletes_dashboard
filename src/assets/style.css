@@ -7,21 +7,42 @@ h5, h2 {
 }
 
 .rc-slider-dot-active {
-    border-color: #B33951;
+    border-color: #FCB131;
 }
 
 .rc-slider-track {
-    background-color: #B33951;
+    background-color: #FCB131;
 }
 
 .rc-slider-handle {
-    background-color: #B33951;
-    border: #B33951;
+    background-color: #FCB131;
+    border: #FCB131;
 }
 
 .rc-slider-handle-dragging{
-    border-color: #B33951;
-    box-shadow: #B33951;
+    border-color: #FCB131;
+    box-shadow: #FCB131;
+}
+
+input {
+    appearance: none;
+    border: 2px solid black;
+    border-radius: 50%;
+    height: 12px;
+    width: 12px;
+    padding: 1px 8px;
+    transition: 0.2s ease-in-out;
+    position: relative;
+    margin-right: 5px;
+}
+
+label{
+    padding: 5px;
+}
+
+input:checked {
+    border: 2px solid black;
+    background-color: #FCB131 !important;
 }
 
 table {
@@ -47,10 +68,10 @@ td {
 }
 
 .custom-tab--selected {
-    color: #B33951 !important;
+    color: #EE334E !important;
     /* border-left: 1px solid lightgrey !important; */
     /* border-right: 1px solid lightgrey !important; */
-    border-top: 3px solid #B33951 !important;
+    border-top: 3px solid #EE334E !important;
     border-bottom: 2px solid white !important;
 }
 

@@ -8,7 +8,7 @@ app = Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLw
 app.title = "Olympic athletes dashboard"
 server = app.server
 
-df = pd.read_csv('data/processed/clean_data.csv')
+df = pd.read_csv('../data/processed/clean_data.csv')
 
 app.layout = html.Div([
 
@@ -157,7 +157,7 @@ app.layout = html.Div([
                             className='custom-tab',
                             selected_className='custom-tab--selected')
                 ])
-                ], style = {'width': '70%', 'overflow': 'hidden', 'height': '950px', 
+                ], style = {'width': '70%', 'overflow': 'hidden', 'height': '920px', 
                             'background-color': '#544F78', 'border-radius': '10px', 
                             'padding': '1%'})
             ], style = {'display': 'flex', 'justify-content': 'space-around'})
@@ -213,8 +213,8 @@ map_styles = {
             'lakecolor': '#97c7f7'},
     'coloraxis': {
         'colorbar': {'title': {'font': {'color': 'white', 'family': 'helvetica'}},
-                    'tickfont': {'color': 'white', 'family': 'helvetica'}},
-        'colorscale': 'reds'
+                    'tickfont': {'color': 'white', 'family': 'helvetica'}}
+        # 'colorscale': 'reds'
     }
 }
 
@@ -233,15 +233,24 @@ def update_graphs(year_range, sport, country, medals, season):
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
     filtered = filtered.groupby(['ID', 'Games']).agg({'Age': 'mean', 'Height': 'mean', 'Weight': 'mean', 'Sex': 'first'}).reset_index()
 
-    fig = px.histogram(data_frame=filtered,nbins = 50 ,x='Height', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Heights')
+    fig = px.histogram(data_frame=filtered, nbins=50 ,
+                        x='Height', color='Sex', opacity=0.8, 
+                        barmode='overlay', title='Distribution of Athlete Heights',
+                        color_discrete_map={'M':'#0081C8', 'F':'#EE334E'})
     fig.update_layout(styling_template)
     fig.update_layout({'xaxis': {'range': [110, 225], 'title': {'text': 'Height (cm)'}}})
 
-    fig2 = px.histogram(data_frame=filtered, x='Age', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Ages')
+    fig2 = px.histogram(data_frame=filtered, 
+                        x='Age', color='Sex', opacity=0.8, 
+                        barmode='overlay', title='Distribution of Athlete Ages',
+                        color_discrete_map={'M':'#0081C8', 'F':'#EE334E'})
     fig2.update_layout(styling_template)
     fig2.update_layout({'xaxis': {'range': [10, 60], 'title': {'text': 'Age (years)'}}})
 
-    fig3 = px.histogram(data_frame=filtered,nbins = 50,  x='Weight', color='Sex', opacity=0.8, barmode='overlay', title='Distribution of Athlete Weights')
+    fig3 = px.histogram(data_frame=filtered,nbins = 50,  
+                        x='Weight', color='Sex', opacity=0.8, 
+                        barmode='overlay', title='Distribution of Athlete Weights',
+                        color_discrete_map={'M':'#0081C8', 'F':'#EE334E'})
     fig3.update_layout(styling_template)
     fig3.update_layout({'xaxis': {'range': [30, 200], 'title': {'text': 'Weight (kgs)'}}})
 
@@ -264,7 +273,8 @@ def update_map(year_range, sport, country, medals, season):
               locations = 'Country',
               locationmode = 'country names',
               color = 'Number of Athletes',
-              title='Number of Athletes Per Country')
+              title='Number of Athletes Per Country',
+              color_continuous_scale=['white', '#00A651'])
     map.update_layout(styling_template)
     map.update_layout(map_styles)
     
