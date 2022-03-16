@@ -15,9 +15,9 @@ df = pd.read_csv('../data/processed/clean_data.csv')
 app.layout = html.Div([
         html.Div([
             html.H1("Who Are in the Olympics?",
-                    style = {'color': 'white', 'text-align': 'left', 'padding': '0px 0px 0px 20px', 'margin-bottom': '-10px'}),
+                    style = {'color': '#f5f5f5', 'text-align': 'left', 'padding': '0px 0px 0px 20px', 'margin-bottom': '-10px'}),
             html.H4("Insights for Olympic Athlete Information since 1896", 
-                    style = {'color': 'white', 'text-align': 'left', 'padding': '0px 0px 10px 20px'}),
+                    style = {'color': '#f5f5f5', 'text-align': 'left', 'padding': '0px 0px 10px 20px'}),
         ], id = 'header'),
         
         # Main Container Div
@@ -27,13 +27,13 @@ app.layout = html.Div([
             html.Div([
                 html.H2("Filters", style = {'flex-grow': '1', 
                                             'margin': '0px',
-                                            'border-bottom': '2px solid white', 
+                                            'border-bottom': '2px solid #f5f5f5', 
                                             'line-height': '1'}),
                 html.Div([
                     html.H5("Drag Slider To Select Years"),
                     dcc.RangeSlider(
                         min = 1896, max = 2016,
-                        marks = {i: {'label': f'{i+4}', 'style': {'transform': 'rotate(90deg)', 'color': 'white'}} for i in range(1896, 2016, 8)},
+                        marks = {i: {'label': f'{i+4}', 'style': {'transform': 'rotate(90deg)', 'color': '#f5f5f5'}} for i in range(1896, 2016, 8)},
                         id = 'year_range',
                         value = [1896, 2016],
                         tooltip={"placement": "top", "always_visible": True}
@@ -65,7 +65,7 @@ app.layout = html.Div([
                         id='medals',
                         inline=True
                     )
-                ], style = {'width': '100%', 'flex-grow': '1', 'color': 'white'}),
+                ], style = {'width': '100%', 'flex-grow': '1', 'color': '#f5f5f5'}),
                 html.Div([
                     html.H5("Season Filter"),
                     dcc.RadioItems(
@@ -74,7 +74,7 @@ app.layout = html.Div([
                         id='season',
                         inline=True
                     )
-                ], style = {'width': '100%', 'flex-grow': '1', 'color': 'white'}),
+                ], style = {'width': '100%', 'flex-grow': '1', 'color': '#f5f5f5'}),
                 html.Div([
                     html.H5("Animation Toggle"),
                     dcc.RadioItems(
@@ -83,7 +83,12 @@ app.layout = html.Div([
                         id='animation',
                         inline=True
                     )
-                ], style = {'width': '100%', 'flex-grow': '1', 'color': 'white'})
+                ], style = {'width': '100%', 'flex-grow': '1', 'color': '#f5f5f5'}),
+                html.P(
+                    children=[''],
+                    id = 'warning',
+                    style = {'width': '100%', 'flex-grow': '1', 'color': '#EE334E'}
+                )
             ], style = {'width': '23%', 'margin-top': '0px', 'padding': '25px', 
                     'background-color': '#544F78', 'border-radius': '10px',
                     'display': 'flex', 'justify-content': 'space-around', 'flex-direction': 'column'}, id = 'sidebar'), 
@@ -130,9 +135,9 @@ app.layout = html.Div([
                         dash_table.DataTable(data=df.sample(50).to_dict('records'), 
                                     columns=[{"name": i, "id": i} for i in df.columns[1:]], 
                                     id = 'tbl', 
-                                    style_cell = {'color': 'black', 'whiteSpace': 'normal'}, 
-                                    style_header = {'color': 'white', 'backgroundColor': '#322c4a', 'border': '0px solid white', 'fontWeight': 'bold', 'textAlign': 'left'},
-                                    style_data = {'backgroundColor': '#96293F', 'color': 'white'},
+                                    style_cell = {'color': 'black', '#f5f5f5Space': 'normal'}, 
+                                    style_header = {'color': '#f5f5f5', 'backgroundColor': '#322c4a', 'border': '0px solid #f5f5f5', 'fontWeight': 'bold', 'textAlign': 'left'},
+                                    style_data = {'backgroundColor': '#96293F', 'color': '#f5f5f5'},
                                     style_data_conditional = [
                                         {
                                             'if': {'column_id': ['ID', 'Sex', 'Height', 'Team', 'Games', 'Season', 'Sport', 'Medal']},
@@ -176,7 +181,7 @@ app.layout = html.Div([
         ], style = {'display': 'fixed', 'height': '100%'}, id = 'main_container')
 
 def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', sport=['All'], country=['All']):
-
+    
     year_filter = (df['Year'] >= year_range[0]) & (df['Year'] <= year_range[1])
     season_filter = True if season == 'Both' else (df['Season'] == season)
     medal_filter = True if medals == 'All' else (df['Medal'] == medals)
@@ -185,10 +190,13 @@ def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', spor
     
     data = data[year_filter & season_filter & sport_filter & country_filter & medal_filter]
 
+    print(len(data))
     return data
+
 
 @app.callback(
     Output('tbl', 'data'),
+    Output('warning', 'children'),
     Input('year_range', 'value'),
     Input('sport', 'value'),
     Input('country', 'value'),
@@ -198,23 +206,31 @@ def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', spor
 def update_table(year_range, sport, country, medals, season):
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
     filtered.drop(columns = 'ID', inplace = True)
-    if len(filtered) < 5000:
-        return filtered.to_dict('records')
-    return filtered.sample(5000).to_dict('records')
+    msg = ''
+    if len(filtered) >= 5000:
+        return filtered.sample(5000).to_dict('records'), [msg]
+    elif len(filtered) == 0:
+        msg = 'No Available Data For Search Parameters'
+    print(len(filtered))
+    return filtered.to_dict('records'), [msg]
+    
+
+       
+    
 
 
-styling_template = {'title': {'font': {'size': 21, 'family': 'helvetica', 'color': 'white'}, 'x': 0,
+styling_template = {'title': {'font': {'size': 21, 'family': 'helvetica', 'color': '#f5f5f5'}, 'x': 0,
                         'xref':'paper', 'y': 1, 'yanchor': 'bottom', 'yref':'paper', 'pad':{'b': 20}},
-                'legend': {'font': {'color': 'white'}},
+                'legend': {'font': {'color': '#f5f5f5'}},
              'margin': dict(l=20, r=20, t=50, b=20),
              'paper_bgcolor': 'rgba(0,0,0,0)', 
              'plot_bgcolor': 'rgba(0,0,0,0)', 
              'colorway': ['black'],
              'xaxis': {
-                 'color': 'white'
+                 'color': '#f5f5f5'
              },
              'yaxis': {
-                 'color': 'white'
+                 'color': '#f5f5f5'
              }}
 
 map_styles = {
@@ -224,12 +240,12 @@ map_styles = {
             'landcolor': '#fcf7e1', 
             'lakecolor': '#97c7f7'},
     'coloraxis': {
-        'colorbar': {'title': {'font': {'color': 'white', 'family': 'helvetica'}},
-                    'tickfont': {'color': 'white', 'family': 'helvetica'}}
+        'colorbar': {'title': {'font': {'color': '#f5f5f5', 'family': 'helvetica'}},
+                    'tickfont': {'color': '#f5f5f5', 'family': 'helvetica'}}
 
     },
-    'sliders': [{'font': {'color': 'white'}, 'tickcolor': 'white', 'pad': {'t': 0}}],
-    'updatemenus': [{'font': {'color': 'white'}, 'pad': {'t': 10}}]
+    'sliders': [{'font': {'color': '#f5f5f5'}, 'tickcolor': '#f5f5f5', 'pad': {'t': 0}}],
+    'updatemenus': [{'font': {'color': '#f5f5f5'}, 'pad': {'t': 10}}]
 }
 
 # Function which takes filtered data and plots the two histograms
@@ -275,7 +291,7 @@ def update_graphs(year_range, sport, country, medals, season, select):
     fig2.update_layout(styling_template)
     fig2.update_layout({'xaxis': {'range': [10, 60], 'title': {'text': 'Age (years)'}}})
 
-    fig3 = px.histogram(data_frame=filtered,nbins = 50,  
+    fig3 = px.histogram(data_frame=filtered,nbins = 70,  
                         x='Weight', color='Sex', opacity=0.8, 
                         barmode='overlay', title=title3,
                         color_discrete_map={'M':'#0081C8', 'F':'#EE334E'})
@@ -308,7 +324,7 @@ def update_map(year_range, sport, country, medals, season, animation):
                 color = 'Number of Athletes',
                 title='Number of Athletes Per Country',
                   animation_frame='Year',
-                color_continuous_scale=['white', '#00A651']
+                color_continuous_scale=['#f5f5f5', '#00A651']
                 )
         
     else: 
@@ -320,7 +336,7 @@ def update_map(year_range, sport, country, medals, season, animation):
                 locationmode = 'country names',
                 color = 'Number of Athletes',
                 title='Number of Athletes Per Country',
-                color_continuous_scale=['white', '#00A651']
+                color_continuous_scale=['#f5f5f5', '#00A651']
                 )
         
     map.update_layout({'clickmode': 'event+select'})

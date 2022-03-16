@@ -3,7 +3,7 @@ body, #main_container {
 }
 
 #header {
-    /* border: 3px solid white; */
+    /* border: 3px solid #f5f5f5; */
     border-radius: 10px;
     width: 103%;
     margin-left: -1.5%;
@@ -18,8 +18,8 @@ body, #main_container {
     box-shadow: 0px 7px 3px 5px rgba(17, 17, 19, 0.425);
 }
 
-h5, h2 {
-    color: white;
+h1, h4, h5, h2 {
+    color: #f5f5f5;
 }
 
 .rc-slider-dot-active {
@@ -69,13 +69,13 @@ td {
     text-align: center !important;
     font-size: 12px;
     border: 0px !important;
-    border-bottom: 2px solid white !important;
-    /* border-right: 1px solid white !important; */
+    border-bottom: 2px solid #f5f5f5 !important;
+    /* border-right: 1px solid #f5f5f5 !important; */
     text-align: center !important;
 }
 
 .custom-tab {
-    color: white;
+    color: #f5f5f5;
     font-size: 20px;
     height: 70px;
     font-family: "Helvetica";
@@ -91,15 +91,20 @@ td {
     color: #EE334E !important;
     background-color: #242037 !important;
     border-top: 3px solid #EE334E !important;
-    border-bottom: 2px solid white !important;
+    border-bottom: 2px solid #f5f5f5 !important;
 }
 
 .next-page, .previous-page, .first-page, .last-page, .page-number {
-    color: white;
+    color: #f5f5f5;
 }
 
 #sidebar, #graph_container {
     background: rgb(63,58,82);
     background: linear-gradient(0deg, rgba(63,58,82,1) 16%, rgb(36, 10, 48) 100%);
     box-shadow: 0px 7px 10px 5px rgba(17, 15, 24, 0.195);
+}
+
+.Select--multi .Select-value {
+    background-color: #FCB131;
+    color: black;
 }
