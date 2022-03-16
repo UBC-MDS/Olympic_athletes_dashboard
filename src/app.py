@@ -3,6 +3,8 @@ import numpy as np
 import altair as alt
 from dash import Dash, dcc, html, Input, Output, dash_table
 import plotly.express as px
+import plotly.graph_objects as go
+
 
 app = Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css', '/style.css'])
 app.title = "Olympic athletes dashboard"
@@ -11,11 +13,12 @@ server = app.server
 df = pd.read_csv('../data/processed/clean_data.csv')
 
 app.layout = html.Div([
-
-        html.H1("Who Are in the Olympics?",
-                style = {'color': 'white', 'text-align': 'left', 'padding': '0px 0px 0px 20px', 'margin-bottom': '-10px'}),
-        html.H4("Insights for Olympic Athlete Information since 1896", 
-                style = {'color': 'white', 'text-align': 'left', 'border-bottom': '1px solid black', 'padding': '0px 0px 10px 20px'}),
+        html.Div([
+            html.H1("Who Are in the Olympics?",
+                    style = {'color': 'white', 'text-align': 'left', 'padding': '0px 0px 0px 20px', 'margin-bottom': '-10px'}),
+            html.H4("Insights for Olympic Athlete Information since 1896", 
+                    style = {'color': 'white', 'text-align': 'left', 'padding': '0px 0px 10px 20px'}),
+        ], id = 'header'),
         
         # Main Container Div
         html.Div([
@@ -71,7 +74,7 @@ app.layout = html.Div([
                         id='season',
                         inline=True
                     )
-                ], style = {'width': '100%', 'flex-grow': '4', 'color': 'white'}),
+                ], style = {'width': '100%', 'flex-grow': '1', 'color': 'white'}),
                 html.Div([
                     html.H5("Animation Toggle"),
                     dcc.RadioItems(
@@ -83,7 +86,7 @@ app.layout = html.Div([
                 ], style = {'width': '100%', 'flex-grow': '1', 'color': 'white'})
             ], style = {'width': '23%', 'margin-top': '0px', 'padding': '25px', 
                     'background-color': '#544F78', 'border-radius': '10px',
-                    'display': 'flex', 'justify-content': 'space-around', 'flex-direction': 'column'}),
+                    'display': 'flex', 'justify-content': 'space-around', 'flex-direction': 'column'}, id = 'sidebar'), 
 
             # Graph Container Div         
             html.Div([
@@ -168,9 +171,9 @@ app.layout = html.Div([
                 ])
                 ], style = {'width': '70%', 'overflow': 'hidden', 'height': '920px', 
                             'background-color': '#544F78', 'border-radius': '10px', 
-                            'padding': '1%'})
+                            'padding': '1%'}, id = 'graph_container')
             ], style = {'display': 'flex', 'justify-content': 'space-around'})
-        ], style = {'display': 'fixed', 'height': '100%', 'background-color': '#322c4a'})
+        ], style = {'display': 'fixed', 'height': '100%'}, id = 'main_container')
 
 def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', sport=['All'], country=['All']):
 
@@ -279,7 +282,7 @@ def update_graphs(year_range, sport, country, medals, season, click, relay):
     fig3.update_layout(styling_template)
     fig3.update_layout({'xaxis': {'range': [30, 200], 'title': {'text': 'Weight (kgs)'}}})
 
-    print(click)
+    # print(click)
     return (fig, fig3, fig2)
 
 # Function which takes filtered data, does additional aggregation, and plots the choropleth
@@ -308,8 +311,7 @@ def update_map(year_range, sport, country, medals, season, animation):
                   animation_frame='Year',
                 color_continuous_scale=['white', '#00A651'])
 
-        map.update_layout({'coloraxis': {'cmax': max, 'cauto': False}})
-
+        
     else: 
         grouped = filtered.groupby('Team')['Name'].nunique().reset_index()
         grouped.rename(columns = {'Team': 'Country', 'Name': 'Number of Athletes'}, inplace = True)

@@ -1,5 +1,20 @@
-body {
-    background-color: #322c4a;
+body, #main_container {
+    background: rgb(35, 31, 52);
+}
+
+#header {
+    /* border: 3px solid white; */
+    border-radius: 10px;
+    width: 92%;
+    margin-left: 4%;
+    margin-bottom: 5px;
+    background: rgb(35, 31, 52);
+    box-shadow: 0px 7px 10px 5px rgba(17, 15, 24, 0.315);
+    transition: 0.3s ease-in-out;
+}
+
+#header:hover {
+    box-shadow: 0px 7px 3px 5px rgba(17, 17, 19, 0.425);
 }
 
 h5, h2 {
@@ -26,17 +41,17 @@ h5, h2 {
 
 input {
     appearance: none;
-    border: 2px solid black;
+    border: 2px solid #ffe4b5;
     border-radius: 50%;
     height: 12px;
     width: 12px;
     padding: 1px 8px;
-    transition: 0.4s ease-in-out;
+    transition: 0.2s ease-in-out;
     position: relative;
     margin-right: 5px;
 }
 
-label{
+label {
     padding: 5px;
 }
 
@@ -65,16 +80,24 @@ td {
     background-color: #322c4a !important;
     border-radius: 7px 7px 0px 0px;
     border: 0px !important;
+    margin-right: 2px;
+    transition: 0.2 ease-in-out;
+    /* border-left: 1px solid red !important; */
 }
 
 .custom-tab--selected {
     color: #EE334E !important;
-    /* border-left: 1px solid lightgrey !important; */
-    /* border-right: 1px solid lightgrey !important; */
+    background-color: #242037 !important;
     border-top: 3px solid #EE334E !important;
     border-bottom: 2px solid white !important;
 }
 
 .next-page, .previous-page, .first-page, .last-page, .page-number {
     color: white;
+}
+
+#sidebar, #graph_container {
+    background: rgb(63,58,82);
+    background: linear-gradient(0deg, rgba(63,58,82,1) 16%, rgba(36,5,51,1) 100%);
+    box-shadow: 0px 7px 10px 5px rgba(17, 15, 24, 0.195);
 }
