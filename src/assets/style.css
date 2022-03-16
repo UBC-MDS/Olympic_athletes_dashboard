@@ -1,14 +1,15 @@
 body, #main_container {
-    background: rgb(35, 31, 52);
+    background: rgb(46, 39, 72);
 }
 
 #header {
     /* border: 3px solid white; */
     border-radius: 10px;
-    width: 92%;
-    margin-left: 4%;
+    width: 103%;
+    margin-left: -1.5%;
+    padding-left: 1.5%;
     margin-bottom: 5px;
-    background: rgb(35, 31, 52);
+    background: rgb(31, 5, 43);
     box-shadow: 0px 7px 10px 5px rgba(17, 15, 24, 0.315);
     transition: 0.3s ease-in-out;
 }
@@ -76,7 +77,8 @@ td {
 .custom-tab {
     color: white;
     font-size: 20px;
-    font-family: "helvetica";
+    height: 70px;
+    font-family: "Helvetica";
     background-color: #322c4a !important;
     border-radius: 7px 7px 0px 0px;
     border: 0px !important;
@@ -98,6 +100,6 @@ td {
 
 #sidebar, #graph_container {
     background: rgb(63,58,82);
-    background: linear-gradient(0deg, rgba(63,58,82,1) 16%, rgba(36,5,51,1) 100%);
+    background: linear-gradient(0deg, rgba(63,58,82,1) 16%, rgb(36, 10, 48) 100%);
     box-shadow: 0px 7px 10px 5px rgba(17, 15, 24, 0.195);
 }

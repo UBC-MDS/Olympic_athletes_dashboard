@@ -242,21 +242,21 @@ map_styles = {
     Input('country', 'value'),
     Input('medals', 'value'),
     Input('season', 'value'),
-    Input('map', 'clickData'),
-    Input('map', 'relayoutData')
+    Input('map', 'selectedData'),
 )
-def update_graphs(year_range, sport, country, medals, season, click, relay):
-    print(relay)
+def update_graphs(year_range, sport, country, medals, season, select):
 
     title1 = 'Distribution of Athlete Heights'
     title2 = 'Distribution of Athlete Ages'
     title3 = 'Distribution of Athlete Weights'
 
-    if click:
-        country = [click['points'][0]['location']]
-        title1 += f'<br><sup>{country[0]}</sup>'
-        title2 += f'<br><sup>{country[0]}</sup>'
-        title3 += f'<br><sup>{country[0]}</sup>'
+    if select:
+        country = [selection['location'] for selection in select['points']]
+        title1 += f'<br><sup>{", ".join(country)}</sup>'
+        title2 += f'<br><sup>{", ".join(country)}</sup>'
+        title3 += f'<br><sup>{", ".join(country)}</sup>'
+
+    print(country)
 
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
     filtered = filtered.groupby(['ID', 'Games']).agg({'Age': 'mean', 'Height': 'mean', 'Weight': 'mean', 'Sex': 'first', 'Year': 'first'}).reset_index()
@@ -282,7 +282,6 @@ def update_graphs(year_range, sport, country, medals, season, click, relay):
     fig3.update_layout(styling_template)
     fig3.update_layout({'xaxis': {'range': [30, 200], 'title': {'text': 'Weight (kgs)'}}})
 
-    # print(click)
     return (fig, fig3, fig2)
 
 # Function which takes filtered data, does additional aggregation, and plots the choropleth
@@ -309,8 +308,8 @@ def update_map(year_range, sport, country, medals, season, animation):
                 color = 'Number of Athletes',
                 title='Number of Athletes Per Country',
                   animation_frame='Year',
-                color_continuous_scale=['white', '#00A651'])
-
+                color_continuous_scale=['white', '#00A651']
+                )
         
     else: 
         grouped = filtered.groupby('Team')['Name'].nunique().reset_index()
@@ -321,9 +320,10 @@ def update_map(year_range, sport, country, medals, season, animation):
                 locationmode = 'country names',
                 color = 'Number of Athletes',
                 title='Number of Athletes Per Country',
-                color_continuous_scale=['white', '#00A651'])
+                color_continuous_scale=['white', '#00A651']
+                )
         
-
+    map.update_layout({'clickmode': 'event+select'})
     map.update_layout(styling_template)
     map.update_layout(map_styles)
     
