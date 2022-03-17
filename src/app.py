@@ -363,6 +363,7 @@ def update_map(year_range, sport, country, medals, season, animation):
     if animation=="Animate":
         grouped = filtered.groupby(['Team', 'Year']).agg({'Name': 'nunique'}).reset_index()
         grouped.rename(columns = {'Team': 'Country', 'Name': 'Number of Athletes'}, inplace = True)
+        grouped.sort_values('Year', inplace=True)
         max = grouped['Number of Athletes'].max()
         map = px.choropleth(grouped,
                 locations = 'Country',
@@ -372,6 +373,8 @@ def update_map(year_range, sport, country, medals, season, animation):
                   animation_frame='Year',
                 color_continuous_scale=['#f5f5f5', '#00A651']
                 )
+
+        map.update_coloraxes({'cmax': max, 'cmin': 0})
         
     else: 
         grouped = filtered.groupby('Team')['Name'].nunique().reset_index()
