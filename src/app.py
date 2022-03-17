@@ -368,7 +368,7 @@ def update_map(year_range, sport, country, medals, season, animation):
                 locations = 'Country',
                 locationmode = 'country names',
                 color = 'Number of Athletes',
-                title='Number of Athletes Per Country',
+                title='Number of Athletes Per Country<br><sup>Click on Country to Filter Histograms</sup>',
                   animation_frame='Year',
                 color_continuous_scale=['#f5f5f5', '#00A651']
                 )
@@ -381,7 +381,7 @@ def update_map(year_range, sport, country, medals, season, animation):
                 locations = 'Country',
                 locationmode = 'country names',
                 color = 'Number of Athletes',
-                title='Number of Athletes Per Country',
+                title='Number of Athletes Per Country<br><sup>Click on Country to Filter Histograms</sup>',
                 color_continuous_scale=['#f5f5f5', '#00A651']
                 )
         
