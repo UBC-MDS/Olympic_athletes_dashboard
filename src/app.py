@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import altair as alt
 from dash import Dash, dcc, html, Input, Output, dash_table
+import dash_bootstrap_components as dbc
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -10,16 +11,31 @@ app = Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLw
 app.title = "Olympic athletes dashboard"
 server = app.server
 
-df = pd.read_csv('../data/processed/clean_data.csv')
+df = pd.read_csv('data/processed/clean_data.csv')
+
+tab_style = {'padding': '6px', 'fontWeight': 'bold', 'background': 'rgb(31, 5, 43)', 'color': 'white', 'border': 'none'}
+tab_selected_style = {'border': 'none', 'borderBottom': '3px solid #EE334E',  'padding': '7px', 'fontWeight': 'bold', 'color': 'black', 'background': '#FCB131'}
 
 app.layout = html.Div([
+        html.Div('HELP', id = 'help_btn'),
+        dbc.Tooltip(
+                    children = [html.H5('Olympics Dashboard User Guide'), 
+                                html.Hr(), 
+                                'This is a dashboard which allows you to observe the distribution of athlete profiles based on their sports, competition years, competition seasons and nationalities.', html.Br(), html.Br(),
+                                'After filtering with the main filters on the left, you can further examine the distribution within each country by clicking on the map, which will update the histograms accordingly. Shift click to select multiple countries. Click on the country again to reset the map.', html.Br(), html.Br(),
+                                'If you want to look at the athlete information in detail, you can click into the Data Table tab, which will display all the rows of data based on your selected filters.'],
+                    target="help_btn",
+                    placement = 'left',
+                    className = 'tooltip',
+                    id = 'help_tooltip',
+                    style = {'font-size': '14px'}
+                ),
         html.Div([
             html.H1("Who Are in the Olympics?",
                     style = {'color': '#f5f5f5', 'text-align': 'left', 'padding': '0px 0px 0px 20px', 'margin-bottom': '-10px'}),
             html.H4("Insights for Olympic Athlete Information since 1896", 
                     style = {'color': '#f5f5f5', 'text-align': 'left', 'padding': '0px 0px 10px 20px'}),
         ], id = 'header'),
-        
         # Main Container Div
         html.Div([
 
@@ -29,6 +45,13 @@ app.layout = html.Div([
                                             'margin': '0px',
                                             'border-bottom': '2px solid #f5f5f5', 
                                             'line-height': '1'}),
+                html.P('Hover over filters for help!', 
+                    style={'color': 'white'}),
+                html.P(
+                    children=[''],
+                    id = 'warning',
+                    style = {'width': '100%', 'flex-grow': '1', 'color': '#EE334E'}
+                ),
                 html.Div([
                     html.H5("Drag Slider To Select Years"),
                     dcc.RangeSlider(
@@ -40,7 +63,7 @@ app.layout = html.Div([
                     )
                 ], style = {'width': '100%', 'flex-grow': '2'}),
                 html.Div([
-                    html.H5("Select Sports"),
+                    html.H5("Select Sports", id = 'sport_help'),
                     dcc.Dropdown(
                         options=['All'] + np.sort(df.Sport.unique()).tolist(),
                         value=['All'],
@@ -49,7 +72,7 @@ app.layout = html.Div([
                     )
                 ], style = {'width': '100%', 'color': 'black', 'flex-grow': '1.5'}),
                 html.Div([
-                    html.H5("Select Countries"),
+                    html.H5("Select Countries", id = 'country_help'),
                     dcc.Dropdown(
                         options=['All'] + np.sort(df.Team.unique()).tolist(),
                         value=['All'],
@@ -58,7 +81,7 @@ app.layout = html.Div([
                     )
                 ], style = {'width': '100%', 'color': 'black', 'flex-grow': '1.5'}),
                 html.Div([
-                    html.H5("Medal Filter"),
+                    html.H5("Medal Filter", id = 'medal_help'),
                     dcc.RadioItems(
                         options=['Gold', 'Silver', 'Bronze'] + ['All'],
                         value='All',
@@ -67,7 +90,7 @@ app.layout = html.Div([
                     )
                 ], style = {'width': '100%', 'flex-grow': '1', 'color': '#f5f5f5'}),
                 html.Div([
-                    html.H5("Season Filter"),
+                    html.H5("Season Filter", id = 'season_help'),
                     dcc.RadioItems(
                         options=df.Season.unique().tolist() + ['Both'],
                         value='Both',
@@ -76,7 +99,7 @@ app.layout = html.Div([
                     )
                 ], style = {'width': '100%', 'flex-grow': '1', 'color': '#f5f5f5'}),
                 html.Div([
-                    html.H5("Animation Toggle"),
+                    html.H5("Animation Toggle", id = 'animation_help'),
                     dcc.RadioItems(
                         options=['Animate', 'Fixed'],
                         value='Fixed',
@@ -84,12 +107,37 @@ app.layout = html.Div([
                         inline=True
                     )
                 ], style = {'width': '100%', 'flex-grow': '1', 'color': '#f5f5f5'}),
-                html.P(
-                    children=[''],
-                    id = 'warning',
-                    style = {'width': '100%', 'flex-grow': '1', 'color': '#EE334E'}
-                )
-            ], style = {'width': '23%', 'margin-top': '0px', 'padding': '25px', 
+                dbc.Tooltip(
+                    "Choose whether or not to animate the world map by year",
+                    target="animation_help",
+                    placement = 'right',
+                    className = 'tooltip'
+                ),
+                dbc.Tooltip(
+                    "Choose to include summer olympics athletes, winter olympics athletes, or both",
+                    target="season_help",
+                    placement = 'right',
+                    className = 'tooltip'
+                ),
+                dbc.Tooltip(
+                    "Choose to see only athletes who have won specific medals, or all athletes (whether or not they have won medals)",
+                    target="medal_help",
+                    placement = 'right',
+                    className = 'tooltip'
+                ),
+                dbc.Tooltip(
+                    "Select which countries to filter by. Multiple countries can be selected. Choose 'All' to show all countries",
+                    target="country_help",
+                    placement = 'right',
+                    className = 'tooltip'
+                ),
+                dbc.Tooltip(
+                    "Select which sports to filter by. Multiple sports can be selected. Choose 'All' to show all sports",
+                    target="sport_help",
+                    placement = 'right',
+                    className = 'tooltip'
+                ),
+            ], style = {'width': '20%', 'margin-top': '0px', 'padding': '25px', 
                     'background-color': '#544F78', 'border-radius': '10px',
                     'display': 'flex', 'justify-content': 'space-around', 'flex-direction': 'column'}, id = 'sidebar'), 
 
@@ -101,17 +149,17 @@ app.layout = html.Div([
                             id = 'loading_hist',
                             children = [
                                 dcc.Graph(id='hist', 
-                                        style = {'height': '350px', 'width': '33%', 'display': 'inline-block'},
+                                        style = {'height': '300px', 'width': '33%', 'display': 'inline-block'},
                                         config={
                                             'displayModeBar':False
                                 }),
                                 dcc.Graph(id='hist2', 
-                                        style = {'height': '350px', 'width': '33%', 'display': 'inline-block'},
+                                        style = {'height': '300px', 'width': '33%', 'display': 'inline-block'},
                                         config={
                                             'displayModeBar':False
                                 }),
                                 dcc.Graph(id='hist3', 
-                                        style = {'height': '350px', 'width': '33%', 'display': 'inline-block'},
+                                        style = {'height': '300px', 'width': '33%', 'display': 'inline-block'},
                                         config={
                                             'displayModeBar':False
                                 })
@@ -121,7 +169,7 @@ app.layout = html.Div([
                             id = 'loading_map',
                             children = [
                                 dcc.Graph(id='map', 
-                                        style = {'height': '500px', 'width': '99%'},
+                                        style = {'height': '420px', 'width': '99%'},
                                         config={
                                             'displayModeBar':False
                                 })
@@ -129,7 +177,8 @@ app.layout = html.Div([
                         )
                         ],
                             className='custom-tab',
-                            selected_className='custom-tab--selected'),
+                            selected_className='custom-tab--selected',
+                            style = tab_style, selected_style=tab_selected_style),
                     dcc.Tab(label='Data Table', children = [
                         html.Br(),
                         dash_table.DataTable(data=df.sample(50).to_dict('records'), 
@@ -137,7 +186,7 @@ app.layout = html.Div([
                                     id = 'tbl', 
                                     style_cell = {'color': 'black', '#f5f5f5Space': 'normal'}, 
                                     style_header = {'color': '#f5f5f5', 'backgroundColor': '#322c4a', 'border': '0px solid #f5f5f5', 'fontWeight': 'bold', 'textAlign': 'left'},
-                                    style_data = {'backgroundColor': '#96293F', 'color': '#f5f5f5'},
+                                    style_data = {'backgroundColor': '#96293F', 'color': '#f5f5f5', 'height': 'auto', 'whiteSpace': 'normal', 'font-size': '10.5px'},
                                     style_data_conditional = [
                                         {
                                             'if': {'column_id': ['ID', 'Sex', 'Height', 'Team', 'Games', 'Season', 'Sport', 'Medal']},
@@ -172,13 +221,17 @@ app.layout = html.Div([
                     
                         ],
                             className='custom-tab',
-                            selected_className='custom-tab--selected')
-                ])
-                ], style = {'width': '70%', 'overflow': 'hidden', 'height': '920px', 
+                            selected_className='custom-tab--selected',
+                            style = tab_style, selected_style=tab_selected_style)
+                ], style = {'height': '40px'})
+                
+                ], style = {'width': '73%', 'overflow': 'hidden', 'height': '770px', 
                             'background-color': '#544F78', 'border-radius': '10px', 
                             'padding': '1%'}, id = 'graph_container')
             ], style = {'display': 'flex', 'justify-content': 'space-around'})
         ], style = {'display': 'fixed', 'height': '100%'}, id = 'main_container')
+
+
 
 def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', sport=['All'], country=['All']):
     
@@ -190,7 +243,6 @@ def filter_data(data, year_range=(1896, 2016), season='Both', medals='All', spor
     
     data = data[year_filter & season_filter & sport_filter & country_filter & medal_filter]
 
-    print(len(data))
     return data
 
 
@@ -211,11 +263,7 @@ def update_table(year_range, sport, country, medals, season):
         return filtered.sample(5000).to_dict('records'), [msg]
     elif len(filtered) == 0:
         msg = 'No Available Data For Search Parameters'
-    print(len(filtered))
     return filtered.to_dict('records'), [msg]
-    
-
-       
     
 
 
@@ -240,8 +288,8 @@ map_styles = {
             'landcolor': '#fcf7e1', 
             'lakecolor': '#97c7f7'},
     'coloraxis': {
-        'colorbar': {'title': {'font': {'color': '#f5f5f5', 'family': 'helvetica'}},
-                    'tickfont': {'color': '#f5f5f5', 'family': 'helvetica'}}
+        'colorbar': {'title': {'font': {'color': '#f5f5f5', 'family': 'system-ui,-apple-system,"Segoe UI"'}},
+                    'tickfont': {'color': '#f5f5f5', 'family': 'system-ui,-apple-system,"Segoe UI"'}}
 
     },
     'sliders': [{'font': {'color': '#f5f5f5'}, 'tickcolor': '#f5f5f5', 'pad': {'t': 0}}],
@@ -271,8 +319,6 @@ def update_graphs(year_range, sport, country, medals, season, select):
         title1 += f'<br><sup>{", ".join(country)}</sup>'
         title2 += f'<br><sup>{", ".join(country)}</sup>'
         title3 += f'<br><sup>{", ".join(country)}</sup>'
-
-    print(country)
 
     filtered = filter_data(df, year_range=year_range, sport=sport, country=country, medals=medals, season=season)
     filtered = filtered.groupby(['ID', 'Games']).agg({'Age': 'mean', 'Height': 'mean', 'Weight': 'mean', 'Sex': 'first', 'Year': 'first'}).reset_index()

@@ -1,21 +1,23 @@
 body, #main_container {
     background: rgb(46, 39, 72);
+    /* overflow-x: hidden; */
 }
+
 
 #header {
     /* border: 3px solid #f5f5f5; */
     border-radius: 10px;
-    width: 103%;
+    width: 100%;
     margin-left: -1.5%;
     padding-left: 1.5%;
     margin-bottom: 5px;
     background: rgb(31, 5, 43);
-    box-shadow: 0px 7px 10px 5px rgba(17, 15, 24, 0.315);
+    box-shadow: 0px 5px 12px 10px rgba(17, 15, 24, 0.302);
     transition: 0.3s ease-in-out;
 }
 
 #header:hover {
-    box-shadow: 0px 7px 3px 5px rgba(17, 17, 19, 0.425);
+    box-shadow: 0px 5px 12px 7px #fcb1310b;
 }
 
 h1, h4, h5, h2 {
@@ -62,6 +64,7 @@ input:checked {
 }
 
 table {
+    width: 10%;
     border-radius: 3px;
 }
 
@@ -72,26 +75,6 @@ td {
     border-bottom: 2px solid #f5f5f5 !important;
     /* border-right: 1px solid #f5f5f5 !important; */
     text-align: center !important;
-}
-
-.custom-tab {
-    color: #f5f5f5;
-    font-size: 20px;
-    height: 70px;
-    font-family: "Helvetica";
-    background-color: #322c4a !important;
-    border-radius: 7px 7px 0px 0px;
-    border: 0px !important;
-    margin-right: 2px;
-    transition: 0.2 ease-in-out;
-    /* border-left: 1px solid red !important; */
-}
-
-.custom-tab--selected {
-    color: #EE334E !important;
-    background-color: #242037 !important;
-    border-top: 3px solid #EE334E !important;
-    border-bottom: 2px solid #f5f5f5 !important;
 }
 
 .next-page, .previous-page, .first-page, .last-page, .page-number {
@@ -107,4 +90,56 @@ td {
 .Select--multi .Select-value {
     background-color: #FCB131;
     color: black;
+}
+
+.tooltip {
+    position: relative;
+    width: 200px;
+    height: auto;
+    background-color: #1a1823cb;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 7px 8px 10px rgba(17, 17, 19, 0.199);
+    margin-left: -200px;
+}
+
+/* #animation_help {
+    display: inline;
+} */
+
+#help_btn {
+    position: fixed;
+    width:  70px;
+    height: 40px;
+    text-align: center;
+    margin-top: 30px;
+    margin-left: 90%;
+    padding-top: 7px;
+    box-sizing: border-box;
+    background-color: #EE334E;
+    border: 2px solid white;
+    color: white;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: 0px 3px 10px 10px rgba(35, 34, 34, 0.322);
+    letter-spacing: 1.5px;
+}
+
+#help_tooltip{
+    position: relative;
+    width: 500px;
+    height: auto;
+    background-color: #35333ec5;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 7px 8px 10px rgba(16, 16, 17, 0.199);
+    margin-right:10px;
+}
+
+hr {
+    height: 2px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
