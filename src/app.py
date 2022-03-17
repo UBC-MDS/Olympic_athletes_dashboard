@@ -225,7 +225,7 @@ app.layout = html.Div([
                             style = tab_style, selected_style=tab_selected_style)
                 ], style = {'height': '40px'})
                 
-                ], style = {'width': '73%', 'overflow': 'hidden', 'height': '770px', 
+                ], style = {'width': '73%', 'overflow': 'hidden', 'height': '780px', 
                             'background-color': '#544F78', 'border-radius': '10px', 
                             'padding': '1%'}, id = 'graph_container')
             ], style = {'display': 'flex', 'justify-content': 'space-around'})
