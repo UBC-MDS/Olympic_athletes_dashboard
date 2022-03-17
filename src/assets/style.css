@@ -83,7 +83,7 @@ td {
 
 #sidebar, #graph_container {
     background: rgb(63,58,82);
-    background: linear-gradient(0deg, rgba(63,58,82,1) 16%, rgb(36, 10, 48) 100%);
+    background: linear-gradient(179deg, rgb(36, 10, 48) 40%, rgb(235, 52, 73, 0.3) 200%);
     box-shadow: 0px 7px 10px 5px rgba(17, 15, 24, 0.195);
 }
 
