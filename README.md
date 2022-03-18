@@ -29,7 +29,7 @@ Our [Olympics Athlete Dashboard](https://olympic-athletes-dash.herokuapp.com/) c
 * When users select some specific combination with no available data, such as Alpine Skiing in Summer Olympics, there will be a message "No Available Data For Search Parameters" on the left side bar.
 
 <p align="center">
-  <img src="docs/Olympic_athletes_dashboard.gif" width=400/>
+  <img src="docs/dashboard.gif" width=400/>
 </p>
 
 ## What are we doing?
