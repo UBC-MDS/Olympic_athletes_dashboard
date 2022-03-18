@@ -22,9 +22,11 @@ This document (the README file) is a hub to give you some information about the 
 ## Demonstration
 
 Our [Olympics Athlete Dashboard](https://olympic-athletes-dash.herokuapp.com/) currently consists of:
-* 4 plots: 3 histograms for athletes' `Age`, `Weight`, and `Height` distribution, with two colors to distinguish genders.
-* 5 filters on the left side bar: a slider for `year` range selection, two drop-down menus for `sports` and `countries`, and two radio buttons to select `medal` and `season`.
+* 4 plots: 3 histograms for athletes' `Age`, `Weight`, and `Height` distribution that can zoom in or out with two colors to distinguish genders, and a map for number of athlete per country.
+* 6 filters on the left side bar: a slider for `year` range selection, two drop-down menus for `sports` and `countries`, and three radio buttons to select `medal` and `season`, and whether or not we can animate the world map by year. All filters have tooltips to explain how to use them.
+* 1 help button: to briefly explain what this dashboard does and guide users.
 * All the plots are on the "Plots" tab, the "Data Table" tab shows the clean data based on the selected filters. 
+* When users select some specific combination with no available data, such as Alpine Skiing in Summer Olympics, there will be a message "No Available Data For Search Parameters" on the left side bar.
 
 <p align="center">
   <img src="docs/Olympic_athletes_dashboard.gif" width=400/>
